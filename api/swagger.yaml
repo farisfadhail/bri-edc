@@ -6,6 +6,7 @@ info:
 
 servers:
   - url: https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com
+  - url: https://core.achmad-faris-fadhail.test.bri-edc.arnatechnology.com
 
 paths:
   /:
@@ -154,21 +155,6 @@ paths:
                     type: number
                     example: 1125000
 
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
----
-
-# Core Service (Port 9000)
-
-servers:
-  - url: https://core.achmad-faris-fadhail.test.bri-edc.arnatechnology.com
-
-paths:
   /core/authorize:
     post:
       summary: Core Service Authorization
@@ -223,3 +209,11 @@ paths:
                   message:
                     type: string
                     example: Transaction approved
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
