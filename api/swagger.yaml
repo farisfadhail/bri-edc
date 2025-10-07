@@ -1,0 +1,225 @@
+openapi: 3.0.0
+info:
+  title: BRI EDC API
+  version: 1.0.0
+  description: API for managing electronic data capture (EDC) transactions.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /:
+    get:
+      summary: Health Check
+      description: Check if the API is running.
+      responses:
+        '200':
+          description: API is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Welcome to BRI EDC API
+
+  /api/v1/auth/_login:
+    post:
+      summary: Login
+      description: Authenticate a user and obtain a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: password
+      responses:
+        '200':
+          description: Successful login with JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login successful
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInpXVCJ9...
+
+  /api/v1/transactions/sale:
+    post:
+      summary: Transaction Sale
+      description: Create a new sale transaction.
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Service token for authorization
+          example: Bearer EyJhbGciOiJIUzI1NiIsInpXVCJ9...
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - merchant_id
+                - terminal_id
+                - amount
+                - card_number
+                - timestamp
+              properties:
+                merchant_id:
+                  type: string
+                  example: MCH123
+                terminal_id:
+                  type: string
+                  example: T02
+                amount:
+                  type: number
+                  example: 125000
+                card_number:
+                  type: string
+                  example: 411111******1111
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: 2025-10-07T12:45:00Z
+      responses:
+        '201':
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                    example: TX123456789
+                  status:
+                    type: string
+                    example: approved
+                  message:
+                    type: string
+                    example: Transaction authorized
+
+  /api/v1/transactions/settlement:
+    post:
+      summary: Transaction Settlement
+      description: Process batch settlement of approved transactions.
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Service token for authorization
+          example: Bearer EyJhbGciOiJIUzI1NiIsInpXVCJ9...
+      responses:
+        '200':
+          description: Settlement processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_id:
+                    type: string
+                    example: BATCH20251007
+                  total_count:
+                    type: integer
+                    example: 15
+                  approved:
+                    type: integer
+                    example: 9
+                  declined:
+                    type: integer
+                    example: 6
+                  total_amount:
+                    type: number
+                    example: 1125000
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+---
+
+# Core Service (Port 9000)
+
+servers:
+  - url: http://localhost:9000
+
+paths:
+  /core/authorize:
+    post:
+      summary: Core Service Authorization
+      description: Authorize a transaction via the core service.
+      parameters:
+        - in: header
+          name: X-Service-Token
+          schema:
+            type: string
+          required: true
+          description: Service token for authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - merchant_id
+                - terminal_id
+                - amount
+                - card_number
+                - timestamp
+              properties:
+                merchant_id:
+                  type: string
+                  example: M001
+                terminal_id:
+                  type: string
+                  example: T001
+                amount:
+                  type: number
+                  example: 2000
+                card_number:
+                  type: string
+                  example: 1234567890123456
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: 2025-10-06T12:30:00Z
+      responses:
+        '200':
+          description: Transaction authorized successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  approved:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Transaction approved

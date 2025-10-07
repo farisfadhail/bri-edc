@@ -36,7 +36,9 @@ func SetupRouter(app *fiber.App, ct *injector.AppContainer) {
 	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return utils.ResponseSuccess(c, "BRI-EDC API up and running", nil)
+		return c.JSON(fiber.Map{
+			"message": "Welcome to BRI EDC API",
+		})
 	})
 
 	api := app.Group("/api/v1")
