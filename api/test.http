@@ -1,0 +1,50 @@
+# Health Check
+GET http://localhost:8080/
+
+###
+
+# Login
+POST http://localhost:8080/api/v1/auth/_login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}
+
+###
+
+# Transaction Sale
+POST http://localhost:8080/api/v1/transactions/sale
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk4MjIyMTUsImlhdCI6MTc1OTgyMjIxNSwidXNlcm5hbWUiOiJhZG1pbiJ9.Bz2vuINRUP_XCWBq9mtEiMFeClxN6phGV5MIuCLuNb0
+
+{
+    "merchant_id": "MCH123",
+    "terminal_id": "T02",
+    "amount": 125000,
+    "card_number": "411111******1111",
+    "timestamp": "2025-10-07T12:45:00Z"
+}
+
+###
+
+# Transaction Settlement
+POST http://localhost:8080/api/v1/transactions/settlement
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk4MjQwOTQsImlhdCI6MTc1OTgyNDA5NCwidXNlcm5hbWUiOiJhZG1pbiJ9.sfjIdh0yQPlo25kXm5qdEl_eMCNX8TtlBSoMCrH-M74
+
+###
+
+# core-service
+POST http://localhost:9000/core/authorize
+Content-Type: application/json
+X-Service-Token: servicesecret
+
+{
+  "merchant_id": "M001",
+  "terminal_id": "T001",
+  "amount": 2000,
+  "card_number": "1234567890123456",
+  "timestamp": "2025-10-06T12:30:00Z"
+}

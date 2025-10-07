@@ -1,6 +1,6 @@
 create table settlements
 (
-    id         int not null,
+    id         int auto_increment not null,
     batch_id       varchar(100) not null unique,
     total_count       int not null,
     approved int not null,

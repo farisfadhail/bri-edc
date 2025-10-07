@@ -2,6 +2,9 @@ package handler
 
 import (
 	"bri-edc/api/internal/services"
+	"bri-edc/api/internal/validations"
+	"bri-edc/api/utils"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,15 +18,25 @@ func NewTransactionHandler(s *services.TransactionService) *TransactionHandler {
 }
 
 func (h *TransactionHandler) Sale(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"rc":      "SUCCESS",
-		"message": "Sale transaction OK 8081",
-	})
+	req, err, code := utils.ValidateAndBind[validations.CreateTransactionRequest](c)
+	if err != nil {
+		return utils.ResponseFailed(c, code, err.Error())
+
+	}
+
+	res, err := h.s.Sale(*req)
+	if err != nil {
+		return utils.ResponseFailed(c, http.StatusUnprocessableEntity, err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(res)
 }
 
 func (h *TransactionHandler) Settlement(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"rc":      "SUCCESS",
-		"message": "Settlement transaction OK",
-	})
+	settlement, err := h.s.Settlement()
+	if err != nil {
+		return utils.ResponseFailed(c, http.StatusUnprocessableEntity, err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(settlement)
 }

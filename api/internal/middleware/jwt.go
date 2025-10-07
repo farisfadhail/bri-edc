@@ -15,22 +15,22 @@ func extractAndParseToken(c *fiber.Ctx) (*string, error) {
 	}
 
 	token := strings.TrimPrefix(auth, "Bearer ")
-	terminalID, err := utils.ParseJWT(token)
+	username, err := utils.ParseJWT(token)
 	if err != nil {
 		return nil, utils.ResponseFailed(c, fiber.StatusUnauthorized, err.Error())
 	}
 
-	return &terminalID, nil
+	return username, nil
 }
 
 func MustBeAuthenticated(ct *injector.AppContainer) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		terminalID, err := extractAndParseToken(c)
+		username, err := extractAndParseToken(c)
 		if err != nil {
 			return err
 		}
 
-		c.Locals("JWT_TERMINAL_ID", &terminalID)
+		c.Locals("JWT_USERNAME", &username)
 
 		return c.Next()
 	}

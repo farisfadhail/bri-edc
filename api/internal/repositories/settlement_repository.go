@@ -7,13 +7,12 @@ import (
 )
 
 type SettlementRepository struct {
-	db *gorm.DB
 }
 
-func NewSettlementRepository(db *gorm.DB) *SettlementRepository {
-	return &SettlementRepository{db: db}
+func NewSettlementRepository() *SettlementRepository {
+	return &SettlementRepository{}
 }
 
-func (r *SettlementRepository) Save(settlement *models.Settlement) error {
-	return r.db.Save(settlement).Error
+func (r *SettlementRepository) Save(db *gorm.DB, settlement *models.Settlement) error {
+	return db.Save(settlement).Error
 }

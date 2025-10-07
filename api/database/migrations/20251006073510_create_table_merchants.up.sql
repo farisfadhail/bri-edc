@@ -1,6 +1,6 @@
 create table merchants
 (
-    id         int not null,
+    id         int auto_increment not null,
     merchant_id       varchar(100) not null unique,
     name   varchar(100) not null,
     created_at timestamp default now(),

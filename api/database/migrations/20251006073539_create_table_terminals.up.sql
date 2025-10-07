@@ -1,6 +1,6 @@
 create table terminals
 (
-    id         int not null,
+    id         int auto_increment not null,
     merchant_id       varchar(100) not null,
     terminal_id       varchar(100) not null unique,
     location   varchar(100) not null,

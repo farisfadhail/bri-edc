@@ -18,12 +18,16 @@ import (
 
 func InitializeApp() (*AppContainer, error) {
 	db := config.ConnectGormDB()
-	transactionRepository := repositories.NewTransactionRepository(db)
-	merchantRepository := repositories.NewMerchantRepository(db)
-	terminalRepository := repositories.NewTerminalRepository(db)
-	transactionService := services.NewTransactionService(db, transactionRepository, merchantRepository, terminalRepository)
+	authRepository := repositories.NewAuthRepository()
+	authService := services.NewAuthService(db, authRepository)
+	authHandler := handler.NewAuthHandler(authService)
+	transactionRepository := repositories.NewTransactionRepository()
+	merchantRepository := repositories.NewMerchantRepository()
+	terminalRepository := repositories.NewTerminalRepository()
+	settlementRepository := repositories.NewSettlementRepository()
+	transactionService := services.NewTransactionService(db, transactionRepository, merchantRepository, terminalRepository, settlementRepository)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
-	appContainer, err := NewAppContainer(db, transactionHandler)
+	appContainer, err := NewAppContainer(db, authHandler, transactionHandler)
 	if err != nil {
 		return nil, err
 	}
@@ -35,17 +39,20 @@ func InitializeApp() (*AppContainer, error) {
 type AppContainer struct {
 	DB *gorm.DB
 	//
+	AuthHandler        *handler.AuthHandler
 	TransactionHandler *handler.TransactionHandler
 }
 
 func NewAppContainer(
 	db *gorm.DB,
 
+	authHandler *handler.AuthHandler,
 	transactionHandler *handler.TransactionHandler,
 ) (*AppContainer, error) {
 	return &AppContainer{
 		DB: db,
 
+		AuthHandler:        authHandler,
 		TransactionHandler: transactionHandler,
 	}, nil
 }

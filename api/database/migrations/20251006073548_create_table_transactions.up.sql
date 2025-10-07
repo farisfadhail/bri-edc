@@ -1,14 +1,15 @@
 create table transactions
 (
-    id         int not null,
+    id         int auto_increment not null,
     transaction_id       varchar(100) not null unique,
     merchant_id       varchar(100) not null,
     terminal_id       varchar(100) not null,
     amount int not null,
     card_number varchar(20) not null,
     status varchar(50) not null,
-    message varchar(255) null,
     timestamp timestamp not null,
+    is_settled BOOLEAN DEFAULT false,
+    hmac varchar(255) not null,
     created_at timestamp default now(),
     primary key (id),
 

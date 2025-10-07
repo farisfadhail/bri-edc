@@ -7,16 +7,21 @@ import (
 )
 
 type MerchantRepository struct {
-	db *gorm.DB
 }
 
-func NewMerchantRepository(db *gorm.DB) *MerchantRepository {
-	return &MerchantRepository{db: db}
+func NewMerchantRepository() *MerchantRepository {
+	return &MerchantRepository{}
 }
 
-func (r *MerchantRepository) FindByID(id string) (*models.Merchant, error) {
+func (r *MerchantRepository) GetByID(db *gorm.DB, id string, preload ...string) (*models.Merchant, error) {
 	var merchant *models.Merchant
-	err := r.db.Preload("Terminal").Where("merchant_id = ?", id).First(&merchant).Error
+	query := db.Model(&merchant).Where("merchant_id = ?", id)
+
+	for _, p := range preload {
+		query = query.Preload(p)
+	}
+
+	err := query.First(&merchant).Error
 	if err != nil {
 		return nil, err
 	}

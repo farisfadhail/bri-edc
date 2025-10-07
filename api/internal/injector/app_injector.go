@@ -21,7 +21,7 @@ type AppContainer struct {
 
 func NewAppContainer(
 	db *gorm.DB,
-//
+	//
 	authHandler *handler.AuthHandler,
 	transactionHandler *handler.TransactionHandler,
 ) (*AppContainer, error) {
