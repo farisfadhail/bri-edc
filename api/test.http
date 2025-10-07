@@ -1,10 +1,10 @@
 # Health Check
-GET http://localhost:8080/
+GET https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com/
 
 ###
 
 # Login
-POST http://localhost:8080/api/v1/auth/_login
+POST https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com/api/v1/auth/_login
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 ###
 
 # Transaction Sale
-POST http://localhost:8080/api/v1/transactions/sale
+POST https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com/api/v1/transactions/sale
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk4MjIyMTUsImlhdCI6MTc1OTgyMjIxNSwidXNlcm5hbWUiOiJhZG1pbiJ9.Bz2vuINRUP_XCWBq9mtEiMFeClxN6phGV5MIuCLuNb0
 
@@ -30,14 +30,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk4MjIyM
 ###
 
 # Transaction Settlement
-POST http://localhost:8080/api/v1/transactions/settlement
+POST https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com/api/v1/transactions/settlement
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTk4MjQwOTQsImlhdCI6MTc1OTgyNDA5NCwidXNlcm5hbWUiOiJhZG1pbiJ9.sfjIdh0yQPlo25kXm5qdEl_eMCNX8TtlBSoMCrH-M74
 
 ###
 
 # core-service
-POST http://localhost:9000/core/authorize
+POST https://core.achmad-faris-fadhail.test.bri-edc.arnatechnology.com/core/authorize
 Content-Type: application/json
 X-Service-Token: servicesecret
 

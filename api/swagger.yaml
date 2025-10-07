@@ -5,7 +5,7 @@ info:
   description: API for managing electronic data capture (EDC) transactions.
 
 servers:
-  - url: http://localhost:8080
+  - url: https://achmad-faris-fadhail.test.bri-edc.arnatechnology.com
 
 paths:
   /:
@@ -166,7 +166,7 @@ components:
 # Core Service (Port 9000)
 
 servers:
-  - url: http://localhost:9000
+  - url: https://core.achmad-faris-fadhail.test.bri-edc.arnatechnology.com
 
 paths:
   /core/authorize:
