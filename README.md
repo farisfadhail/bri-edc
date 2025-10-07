@@ -12,3 +12,8 @@
 git clone https://github.com/farisfadhail/bri-edc.git
 cd bri-edc
 docker-compose up --build
+
+# Run migrations and seeders
+docker compose exec api ./migration migrate:up
+docker compose exec api ./seeder seed:run
+```

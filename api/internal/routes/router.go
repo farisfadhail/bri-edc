@@ -41,12 +41,15 @@ func SetupRouter(app *fiber.App, ct *injector.AppContainer) {
 		})
 	})
 
+	app.Get("/docs", func(c *fiber.Ctx) error {
+		return c.Redirect("https://app.swaggerhub.com/apis/farisfadhail-6d6/bri-edc-api/1.0.0")
+	})
+
 	api := app.Group("/api/v1")
 
 	api.Post("/auth/_login", ct.AuthHandler.Login)
 
 	tx := api.Group("/transactions", middleware.MustBeAuthenticated(ct))
-	//tx := api.Group("/transactions")
 	{
 		tx.Post("/sale", ct.TransactionHandler.Sale)
 		tx.Post("/settlement", ct.TransactionHandler.Settlement)
