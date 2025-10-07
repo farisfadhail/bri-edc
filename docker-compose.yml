@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: bri-edc-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bri-edc
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  core:
+    build:
+      context: ./core-service
+      dockerfile: Dockerfile
+    container_name: bri-core-service
+    environment:
+      SERVICE_TOKEN: servicesecret
+      CORE_PORT: 9000
+    ports:
+      - "9000:9000"
+    restart: always
+    depends_on:
+      - db
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: bri-edc-api
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: password
+      DB_NAME: bri-edc
+      JWT_SECRET: sangat-rahasia
+      CORE_SERVICE_URL: http://core:9000
+      SERVICE_TOKEN: servicesecret
+      APP_ENV: production
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+      - core
+
+volumes:
+  db_data:
