@@ -47,6 +47,7 @@ services:
       CORE_SERVICE_URL: http://core:9000
       SERVICE_TOKEN: servicesecret
       APP_ENV: production
+      HMAC_SECRET_KEY: very-secret-key
     ports:
       - "8080:8080"
     restart: always
