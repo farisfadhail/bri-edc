@@ -92,10 +92,6 @@ func parseRollbackStep() int {
 }
 
 func runMigrateFresh(db *migrate.Migrate) {
-	if os.Getenv("APP_ENV") == "production" {
-		log.Fatal("Running in production mode")
-	}
-
 	if !confirmFresh() {
 		fmt.Println("Migration fresh cancelled.")
 	}
