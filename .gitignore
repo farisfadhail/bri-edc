@@ -1,4 +1,4 @@
-./idea
+/idea
 
-./api/.env
-./core-service/.env
+/api/.env
+/core-service/.env
